@@ -4,20 +4,35 @@ from apps.users.models import User
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        write_only=True,
+        min_length=8,
+        trim_whitespace=False,
+    )
     
     class Meta:
         model = User
         fields = [
+            "id",
             "email",
             "password",
             "name",
-            "gender"
+            "gender",
+            "date_joined"
         ]
+        read_only_fields = ["id","date_joined"]
+        
+        
 
-    def validate_password(self,value):
-        if len(value) < 8:
-            raise serializers.ValidationError("Password must be at least 8 characters long.")
-        return value
+   
+
+    def create(self, validated_data):
+        return User.objects.create_user(
+        email=validated_data["email"],
+        password=validated_data["password"],
+        name=validated_data["name"],
+        gender=validated_data.get("gender"),
+    )
 
 
 

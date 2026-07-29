@@ -6,4 +6,4 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ["email","name","phone","gender","profile_pic","is_active","is_staff","is_superuser"]
     list_filter = ["gender","is_staff","is_superuser"]
     search_fields = ["email","name","phone"]
-    ordering = ["-created_at"]
+    ordering = ["date_joined"]

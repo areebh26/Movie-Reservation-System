@@ -74,6 +74,8 @@ class User(AbstractUser):
 
     phone = PhoneNumberField(
         unique=True,
+        null=True,
+        blank=True
     )
 
     gender = models.CharField(
