@@ -44,5 +44,31 @@ class UserLoginSerializer(serializers.ModelSerializer):
             "email",
             "password"
         ]
+
+
+
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "name",
+            "gender",
+            "date_joined",
+            "phone",
+            "profile_pic",
+        ]
+        read_only_fields = ["id","date_joined"]
+
+
+
+class ProfilePicUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "profile_pic",
+        ]
+        
             
         

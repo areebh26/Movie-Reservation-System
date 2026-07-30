@@ -6,7 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
 
 
-from apps.users.serializers import UserRegistrationSerializer,UserLoginSerializer
+from apps.users.serializers import UserRegistrationSerializer,UserLoginSerializer,UserUpdateSerializer,ProfilePicUpdateSerializer
 
 
 
@@ -74,3 +74,26 @@ class LogoutView(APIView):
             )
 
         return Response(status=status.HTTP_205_RESET_CONTENT)
+
+
+
+class UpdateUserView(APIView):
+    def patch(self,request):
+        user = request.user
+        serializer = UserUpdateSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+class UpdateProfilePicView(APIView):
+    def patch(self,request):
+        user = request.user
+        serializer = ProfilePicUpdateSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
