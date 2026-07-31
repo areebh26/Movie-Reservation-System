@@ -4,6 +4,8 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.exceptions import TokenError
+from .models import User
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 from apps.users.serializers import UserRegistrationSerializer,UserLoginSerializer,UserUpdateSerializer,ProfilePicUpdateSerializer
@@ -78,8 +80,17 @@ class LogoutView(APIView):
 
 
 class UpdateUserView(APIView):
-    def patch(self,request):
-        user = request.user
+    def patch(self,request,id):
+        try:
+            user = User.objects.get(id=id)
+        except User.DoesNotExist:
+            return Response({"detail": "User not found."},
+                status=status.HTTP_404_NOT_FOUND)
+
+        if user != request.user:
+            return Response({"detail": "You are not authorized to update this user."},
+                status=status.HTTP_403_FORBIDDEN)
+
         serializer = UserUpdateSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -90,9 +101,17 @@ class UpdateUserView(APIView):
 
 
 class UpdateProfilePicView(APIView):
-    def patch(self,request):
-        user = request.user
-        serializer = ProfilePicUpdateSerializer(user, data=request.data, partial=True)
+    parser_classes = [MultiPartParser, FormParser]
+    def put(self,request,id):
+        try:
+            user = User.objects.get(id=id)
+        except User.DoesNotExist:
+            return Response({"detail": "User not found."},status=status.HTTP_404_NOT_FOUND)
+
+        if user != request.user:
+            return Response({"detail": "You are not authorized to update this user."},status=status.HTTP_403_FORBIDDEN)
+
+        serializer = ProfilePicUpdateSerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

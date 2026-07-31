@@ -57,7 +57,6 @@ class UserUpdateSerializer(serializers.ModelSerializer):
             "gender",
             "date_joined",
             "phone",
-            "profile_pic",
         ]
         read_only_fields = ["id","date_joined"]
 
