@@ -116,3 +116,18 @@ class UpdateProfilePicView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDeleteView(APIView):
+    def delete(self,request,id):
+        try:
+            user = User.objects.get(id=id)
+        except User.DoesNotExist:
+            return Response({"detail": "User not found."},status=status.HTTP_404_NOT_FOUND)
+
+        if user != request.user:
+            return Response({"detail": "You are not authorized to delete this user."},status=status.HTTP_403_FORBIDDEN)
+
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
