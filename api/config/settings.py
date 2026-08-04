@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.users',
     'apps.movie',
+    'apps.seat',
+    'apps.screen',
     "phonenumber_field",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
