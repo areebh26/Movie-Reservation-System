@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\api",
+    "\\api\\apps",
+    "\\api\\apps\\movie",
+    "\\api\\apps\\users"
+  ],
+  "SelectedNode": "\\api\\apps\\movie\\models.py",
+  "PreviewInSolutionExplorer": false
+}
