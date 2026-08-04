@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 
 class Movie(models.Model):
@@ -13,6 +14,7 @@ class Movie(models.Model):
         SCI_FI = "SCI_FI", "Science Fiction"
         ANIMATION = "ANIMATION", "Animation"
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
     description = models.TextField()
     duration_minutes = models.PositiveIntegerField()
@@ -28,7 +30,5 @@ class Movie(models.Model):
         null=True,
         blank=True,
     )
-
-    price = models.PositiveIntegerField()
 
     created_at = models.DateTimeField(auto_now_add=True)
